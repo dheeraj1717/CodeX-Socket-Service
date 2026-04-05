@@ -5,6 +5,7 @@ const { Server } = require("socket.io");
 
 const app = express();
 const httpServer = createServer(app);
+app.use(express.json());
 
 const redisCache = new Redis();
 const io = new Server(httpServer, {
@@ -31,6 +32,7 @@ io.on("connection", (socket) => {
 });
 
 app.post('/sendPayload', async (req, res)=>{
+    console.log("Payload received", req.body);
     const {userId, payload} = req.body;
     if(!userId || !payload){
         return res.status(400).send("Invalid request");
